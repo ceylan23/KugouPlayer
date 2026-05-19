@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.kugou.player.ui.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_playlistDetail"
+            app:destination="@id/playlistDetailFragment" />
+        <action
+            android:id="@+id/action_home_to_rankDetail"
+            app:destination="@id/rankDetailFragment" />
+        <action
+            android:id="@+id/action_home_to_artistDetail"
+            app:destination="@id/artistDetailFragment" />
+        <action
+            android:id="@+id/action_home_to_albumDetail"
+            app:destination="@id/albumDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.kugou.player.ui.search.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_search_to_artistDetail"
+            app:destination="@id/artistDetailFragment" />
+        <action
+            android:id="@+id/action_search_to_albumDetail"
+            app:destination="@id/albumDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/libraryFragment"
+        android:name="com.kugou.player.ui.library.LibraryFragment"
+        android:label="Library"
+        tools:layout="@layout/fragment_library">
+        <action
+            android:id="@+id/action_library_to_playlistDetail"
+            app:destination="@id/playlistDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.kugou.player.ui.settings.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/playlistDetailFragment"
+        android:name="com.kugou.player.ui.detail.PlaylistDetailFragment"
+        android:label="Playlist"
+        tools:layout="@layout/fragment_playlist_detail">
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/rankDetailFragment"
+        android:name="com.kugou.player.ui.detail.RankDetailFragment"
+        android:label="Rank"
+        tools:layout="@layout/fragment_rank_detail">
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/artistDetailFragment"
+        android:name="com.kugou.player.ui.detail.ArtistDetailFragment"
+        android:label="Artist"
+        tools:layout="@layout/fragment_artist_detail">
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/albumDetailFragment"
+        android:name="com.kugou.player.ui.detail.AlbumDetailFragment"
+        android:label="Album"
+        tools:layout="@layout/fragment_album_detail">
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+
+</navigation>
