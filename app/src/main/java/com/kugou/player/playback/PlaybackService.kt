@@ -38,6 +38,12 @@ class PlaybackService : Service() {
         super.onCreate()
         createNotificationChannel()
         mediaSession = MediaSession.Builder(this, playbackManager.player).build()
+
+        playbackManager.player.addListener(object : Player.Listener {
+            override fun onIsPlayingChanged(playing: Boolean) {
+                updateNotification()
+            }
+        })
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -48,7 +54,12 @@ class PlaybackService : Service() {
             ACTION_PREVIOUS -> playbackManager.skipPrevious()
             ACTION_STOP -> {
                 playbackManager.player.pause()
-                stopForeground(STOP_FOREGROUND_REMOVE)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    stopForeground(STOP_FOREGROUND_REMOVE)
+                } else {
+                    @Suppress("DEPRECATION")
+                    stopForeground(true)
+                }
                 stopSelf()
             }
         }
@@ -112,11 +123,6 @@ class PlaybackService : Service() {
                     R.drawable.ic_skip_next, "Next",
                     createPendingIntent(ACTION_NEXT)
                 ).build()
-            )
-            .setStyle(
-                androidx.media.app.NotificationCompat.MediaStyle()
-                    .setMediaSession(mediaSession?.sessionCompatToken)
-                    .setShowActionsInCompactView(0, 1, 2)
             )
             .setOngoing(isPlaying)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)

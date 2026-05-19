@@ -2,6 +2,9 @@ package com.kugou.player.data
 
 import com.kugou.player.api.ApiService
 import com.kugou.player.api.CookieManager
+import com.kugou.player.api.PlaylistTag
+import com.kugou.player.api.FmClassInfo
+import com.kugou.player.api.SongInfo
 import com.kugou.player.model.*
 import javax.inject.Inject
 import javax.inject.Singleton

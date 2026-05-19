@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.homeFragment, R.id.libraryFragment -> {
                     binding.bottomNav.visibility = View.VISIBLE
-                    binding.miniPlayerBar.visibility =
+                    binding.miniPlayerBar.root.visibility =
                         if (playerViewModel.currentSong.value != null) View.VISIBLE else View.GONE
                 }
                 else -> {
@@ -73,14 +73,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupMiniPlayer() {
-        binding.miniPlayerBar.setOnClickListener {
+        val miniPlayer = binding.miniPlayerBar
+
+        miniPlayer.root.setOnClickListener {
             val intent = Intent(this, PlayerActivity::class.java)
             startActivity(intent)
         }
 
-        val miniPlayPause = binding.miniPlayerBar.findViewById<android.widget.ImageButton>(R.id.mini_play_pause)
-
-        miniPlayPause.setOnClickListener {
+        miniPlayer.miniPlayPause.setOnClickListener {
             playerViewModel.togglePlayPause()
         }
 
@@ -88,17 +88,17 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     playerViewModel.currentSong.collect { song ->
-                        binding.miniPlayerBar.visibility =
+                        miniPlayer.root.visibility =
                             if (song != null) View.VISIBLE else View.GONE
                         song?.let {
-                            binding.miniPlayerBar.findViewById<android.widget.TextView>(R.id.mini_song_name).text = it.name
-                            binding.miniPlayerBar.findViewById<android.widget.TextView>(R.id.mini_artist_name).text = it.artist
+                            miniPlayer.miniSongName.text = it.name
+                            miniPlayer.miniArtistName.text = it.artist
                         }
                     }
                 }
                 launch {
                     playerViewModel.isPlaying.collect { isPlaying ->
-                        miniPlayPause.setImageResource(
+                        miniPlayer.miniPlayPause.setImageResource(
                             if (isPlaying) R.drawable.ic_pause else R.drawable.ic_play
                         )
                     }
