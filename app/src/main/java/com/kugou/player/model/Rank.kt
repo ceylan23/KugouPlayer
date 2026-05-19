@@ -10,12 +10,10 @@ data class Rank(
     val coverUrl: String
 )
 
-fun RankInfo.toRank(): Rank {
-    return Rank(
-        id = rankid,
-        name = rankname,
-        type = ranktype,
-        intro = intro,
-        coverUrl = img
-    )
-}
+fun RankInfo.toRank(): Rank = Rank(
+    id = rankid,
+    name = rankname,
+    type = ranktype.toString(),
+    intro = intro,
+    coverUrl = albumImg.ifEmpty { img }.ifEmpty { bannerImg }
+)

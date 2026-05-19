@@ -10,12 +10,10 @@ data class Comment(
     val addTime: String
 )
 
-fun CommentInfo.toComment(): Comment {
-    return Comment(
-        userName = userName,
-        userAvatar = userPic,
-        content = content,
-        likeCount = likeCount,
-        addTime = addtime
-    )
-}
+fun CommentInfo.toComment(): Comment = Comment(
+    userName = userName,
+    userAvatar = userPic,
+    content = content,
+    likeCount = likeCount,
+    addTime = addtime
+)

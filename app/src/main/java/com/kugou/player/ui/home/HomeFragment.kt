@@ -160,7 +160,7 @@ class RecommendFragment : Fragment() {
                 launch {
                     viewModel.banners.collect { state ->
                         if (state is UiState.Success) {
-                            val bannerText = state.data.joinToString(" | ") { it.title }
+                            val bannerText = state.data.joinToString(" | ") { it.resolvedTitle }
                             binding.tvBannerHeader.text = bannerText
                             binding.tvBannerHeader.visibility = View.VISIBLE
                         } else {

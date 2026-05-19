@@ -1,6 +1,6 @@
 package com.kugou.player.model
 
-import com.kugou.player.api.ArtistInfo
+import com.kugou.player.api.ArtistDetailData
 
 data class Artist(
     val id: String,
@@ -9,11 +9,9 @@ data class Artist(
     val intro: String
 )
 
-fun ArtistInfo.toArtist(): Artist {
-    return Artist(
-        id = authorId,
-        name = authorName,
-        avatarUrl = avatar,
-        intro = intro
-    )
-}
+fun ArtistDetailData.toArtist(): Artist = Artist(
+    id = authorId,
+    name = authorName,
+    avatarUrl = avatar.ifEmpty { sizableAvatar },
+    intro = intro
+)

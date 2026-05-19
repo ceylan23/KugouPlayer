@@ -11,13 +11,11 @@ data class Playlist(
     val songCount: Int
 )
 
-fun PlaylistInfo.toPlaylist(): Playlist {
-    return Playlist(
-        id = globalCollectionId,
-        name = name,
-        coverUrl = pic,
-        description = introduction,
-        creatorName = nickname,
-        songCount = count
-    )
-}
+fun PlaylistInfo.toPlaylist(): Playlist = Playlist(
+    id = specialid,
+    name = resolvedName,
+    coverUrl = resolvedCover,
+    description = intro,
+    creatorName = nickname.ifEmpty { singername },
+    songCount = songcount
+)

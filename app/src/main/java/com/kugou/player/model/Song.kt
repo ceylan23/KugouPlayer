@@ -12,21 +12,17 @@ data class Song(
     val duration: Long,
     val imageUrl: String,
     val hash: String,
-    val mvHash: String,
     var playUrl: String = ""
 )
 
-fun SongInfo.toSong(): Song {
-    return Song(
-        id = fileHash,
-        name = songName,
-        artist = singerName,
-        artistId = singerId,
-        album = albumName,
-        albumId = albumID,
-        duration = duration,
-        imageUrl = image,
-        hash = fileHash,
-        mvHash = mvHash
-    )
-}
+fun SongInfo.toSong(): Song = Song(
+    id = hash,
+    name = resolvedName,
+    artist = resolvedArtist,
+    artistId = singerId,
+    album = albumname,
+    albumId = albumId,
+    duration = resolvedDuration,
+    imageUrl = "",
+    hash = hash
+)

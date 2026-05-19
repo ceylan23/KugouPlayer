@@ -11,13 +11,11 @@ data class Album(
     val intro: String
 )
 
-fun AlbumInfo.toAlbum(): Album {
-    return Album(
-        id = albumid,
-        name = albumname,
-        coverUrl = img,
-        artistName = singername,
-        publishDate = publishDate,
-        intro = intro
-    )
-}
+fun AlbumInfo.toAlbum(): Album = Album(
+    id = albumid,
+    name = albumname,
+    coverUrl = img,
+    artistName = singername,
+    publishDate = publishDate,
+    intro = intro
+)
