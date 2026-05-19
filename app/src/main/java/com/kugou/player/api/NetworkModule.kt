@@ -2,7 +2,7 @@ package com.kugou.player.api
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.kugou.player.BuildConfig
+import com.kugou.player.util.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -77,18 +77,39 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(cookieManager: CookieManager): OkHttpClient {
+    fun provideSettingsPrefs(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences(Constants.PREF_NAME, Context.MODE_PRIVATE)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(cookieManager: CookieManager, settingsPrefs: SharedPreferences): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
-            level = if (BuildConfig.DEBUG) {
-                HttpLoggingInterceptor.Level.BODY
-            } else {
-                HttpLoggingInterceptor.Level.NONE
-            }
+            level = HttpLoggingInterceptor.Level.BODY
         }
 
         val cookieInterceptor = Interceptor { chain ->
             val original = chain.request()
-            val requestBuilder = original.newBuilder()
+
+            // Get the base URL from settings
+            val baseUrl = settingsPrefs.getString(
+                Constants.KEY_API_BASE_URL,
+                Constants.DEFAULT_API_BASE_URL
+            ) ?: Constants.DEFAULT_API_BASE_URL
+
+            // Rewrite the URL to use the configured base URL
+            val newUrl = original.url.newBuilder()
+                .scheme("http")
+                .host(baseUrl.removePrefix("http://").removePrefix("https://").split(":").first())
+                .port(
+                    try {
+                        baseUrl.removePrefix("http://").removePrefix("https://")
+                            .split(":").getOrNull(1)?.split("/")?.first()?.toInt() ?: 3000
+                    } catch (_: Exception) { 3000 }
+                )
+                .build()
+
+            val requestBuilder = original.newBuilder().url(newUrl)
 
             val guid = cookieManager.getOrCreateGuid()
             val mid = cookieManager.getOrCreateMid()
@@ -115,8 +136,9 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        // Base URL is overridden by the interceptor, but we need a valid URL here
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.API_BASE_URL)
+            .baseUrl("http://localhost:3000/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

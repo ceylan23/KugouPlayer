@@ -1,7 +1,7 @@
 package com.kugou.player.util
 
 object Constants {
-    const val DEFAULT_API_BASE_URL = "https://api.kugou.com/"
+    const val DEFAULT_API_BASE_URL = "http://localhost:3000/"
     const val PREF_NAME = "kugou_player_prefs"
     const val KEY_API_BASE_URL = "api_base_url"
     const val KEY_QUALITY = "audio_quality"
