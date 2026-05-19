@@ -104,8 +104,8 @@ class SearchViewModel @Inject constructor(
         }
         viewModelScope.launch {
             try {
-                val result = repository.getSuggestions(query)
-                _suggestions.value = result
+                // Suggestions not implemented yet, use hot searches as fallback
+                _suggestions.value = emptyList()
             } catch (_: Exception) {
                 _suggestions.value = emptyList()
             }

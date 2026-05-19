@@ -39,7 +39,7 @@ class DetailViewModel @Inject constructor(
             _songs.value = UiState.Loading
             try {
                 val result = repository.getPlaylistSongs(id)
-                _detail.value = UiState.Success(result.playlist)
+                _detail.value = UiState.Success(result.playlistId)
                 _songs.value = if (result.songs.isEmpty()) {
                     UiState.Empty
                 } else {

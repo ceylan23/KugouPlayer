@@ -14,8 +14,8 @@ import javax.inject.Inject
 
 data class UserInfo(
     val userId: String,
-    val userName: String,
-    val avatarUrl: String
+    val userName: String = "",
+    val avatarUrl: String = ""
 )
 
 @HiltViewModel
@@ -50,6 +50,7 @@ class LibraryViewModel @Inject constructor(
             val loggedIn = repository.isLoggedIn()
             _isLoggedIn.value = loggedIn
             if (loggedIn) {
+                _userInfo.value = UserInfo(repository.getUserId())
                 loadUserInfo()
             }
         } catch (_: Exception) {
@@ -74,7 +75,7 @@ class LibraryViewModel @Inject constructor(
             try {
                 val result = repository.loginByPhone(phone, code)
                 _isLoggedIn.value = true
-                _userInfo.value = UserInfo(result.userId, result.userName, result.avatarUrl)
+                _userInfo.value = UserInfo(result.userId)
                 _loginState.value = UiState.Success("登录成功")
                 loadUserInfo()
             } catch (e: Exception) {
@@ -101,21 +102,21 @@ class LibraryViewModel @Inject constructor(
             while (true) {
                 try {
                     val status = repository.checkQrStatus(key)
-                    when (status.statusCode) {
-                        800 -> {
+                    when (status.status) {
+                        0 -> {
                             _qrCheckStatus.value = "二维码已过期"
                             break
                         }
-                        801 -> {
+                        1 -> {
                             _qrCheckStatus.value = "等待扫码..."
                         }
-                        802 -> {
+                        2 -> {
                             _qrCheckStatus.value = "已扫码，等待确认..."
                         }
-                        803 -> {
-                            repository.saveAuth(status.token, status.userId, status.userName, status.avatarUrl)
+                        4 -> {
+                            repository.saveAuth(status.token, status.userId)
                             _isLoggedIn.value = true
-                            _userInfo.value = UserInfo(status.userId, status.userName, status.avatarUrl)
+                            _userInfo.value = UserInfo(status.userId)
                             _loginState.value = UiState.Success("登录成功")
                             _qrCheckStatus.value = ""
                             loadUserInfo()
