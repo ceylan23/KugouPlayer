@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings_api_url"
-            android:textAppearance="titleMedium"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
             android:textColor="@color/md_theme_onBackground" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/settings_quality"
-            android:textAppearance="titleMedium"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
             android:textColor="@color/md_theme_onBackground" />
 
         <RadioGroup
@@ -90,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/settings_about"
-            android:textAppearance="titleMedium"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
             android:textColor="@color/md_theme_onBackground" />
 
         <TextView
